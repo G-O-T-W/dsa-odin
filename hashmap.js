@@ -9,6 +9,10 @@ export default class Hashmap {
         this.size = 0;
     }
 
+    isOutOfBounds(index) {
+        return index < 0 || index >= this.capacity;
+    }
+
     hash(key) {
         let hashCode = 0;
         const primeNumber = 31;
@@ -16,6 +20,8 @@ export default class Hashmap {
             hashCode = (primeNumber * hashCode + key.charCodeAt(i));
             hashCode %= this.capacity;
         }
+        if (this.isOutOfBounds(hashCode))
+            throw new Error("Trying to access index out of bound");
         return hashCode;
     }
 
