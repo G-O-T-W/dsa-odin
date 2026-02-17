@@ -26,6 +26,30 @@ class Tree {
     return root;
   }
 
+  #getSuccessor(cur) {
+    cur = cur.right;
+    while (cur !== null && cur.left !== null) {
+      cur = cur.left;
+    }
+    return cur;
+  }
+
+  #deleteNode(root, value) {
+    if (root === null) return null;
+    if (root.data > value) {
+      root.left = this.#deleteNode(root.left, value);
+    } else if (root.data < value) {
+      root.right = this.#deleteNode(root.right, value);
+    } else {
+      if (root.left === null) return root.right;
+      if (root.right === null) return root.left;
+      const succ = this.#getSuccessor(root);
+      root.data = succ.data;
+      root.right = this.#deleteNode(root.right, succ.data);
+    }
+    return root;
+  }
+
   includes(value) {
     let cur = this.root;
     while (cur !== null) {
@@ -59,9 +83,11 @@ class Tree {
     }
   }
 
-  delete(value) {}
+  delete(value) {
+    let cur = this.root;
+    return this.#deleteNode(cur, value);
+  }
 }
-
 // Driver Code
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -87,8 +113,12 @@ const arr = randArr(100, 10);
 const bst = new Tree(arr);
 prettyPrint(bst.root);
 
-console.log(bst.includes(23));
-console.log(bst.includes(9));
+console.log(bst.includes(33));
 
 bst.insert(33);
+prettyPrint(bst.root);
+
+console.log(bst.includes(33));
+
+bst.delete(33);
 prettyPrint(bst.root);
