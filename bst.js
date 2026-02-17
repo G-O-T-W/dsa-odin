@@ -52,8 +52,8 @@ class Tree {
 
   #inorder(root, callback) {
     if (root == null) return;
-    root.data = callback(root.data);
     this.#inorder(root.left, callback);
+    root.data = callback(root.data);
     this.#inorder(root.right, callback);
   }
 
@@ -66,9 +66,9 @@ class Tree {
 
   #postorder(root, callback) {
     if (root == null) return;
-    root.data = callback(root.data);
     this.#postorder(root.left, callback);
     this.#postorder(root.right, callback);
+    root.data = callback(root.data);
   }
 
   #findLongestPath(root) {
@@ -76,6 +76,14 @@ class Tree {
     let l = this.#findLongestPath(root.left);
     let r = this.#findLongestPath(root.right);
 
+    return 1 + Math.max(l, r);
+  }
+
+  #isBalancedHelper(root) {
+    if (root == null) return 0;
+    let l = this.#isBalancedHelper(root.left);
+    let r = this.#isBalancedHelper(root.right);
+    if (l == -1 || r == -1 || Math.abs(l - r) > 1) return -1;
     return 1 + Math.max(l, r);
   }
 
@@ -165,6 +173,33 @@ class Tree {
       }
     }
   }
+
+  depth(value) {
+    let cur = this.root;
+    let d = 0;
+    while (cur !== null) {
+      d++;
+      if (cur.data > value) {
+        cur = cur.left;
+      } else if (cur.data < value) {
+        cur = cur.right;
+      } else {
+        return d - 1;
+      }
+    }
+  }
+
+  isBalanced() {
+    const res = this.#isBalancedHelper(this.root);
+    if (res == -1) return false;
+    else return true;
+  }
+
+  rebalance() {
+    let arr = [];
+    this.inOrderForEach((x) => arr.push(x));
+    this.root = this.#buildTree(arr, 0, arr.length - 1);
+  }
 }
 // Driver Code
 
@@ -187,24 +222,45 @@ const randArr = (u_limit, size) => {
   return arr;
 };
 
-// const arr = randArr(100, 10);
-const arr = [13, 22, 78, 5, 9, 10, 11, 45, 67, 88];
+const arr = randArr(100, 10);
 const bst = new Tree(arr);
+
+console.log("Tree is balanced:" + bst.isBalanced());
+
+let traversal = [];
+bst.levelOrderForEach(function (x) {
+  traversal.push(x);
+  return x;
+});
+console.log(traversal);
+
+traversal = [];
+bst.inOrderForEach(function (x) {
+  traversal.push(x);
+  return x;
+});
+console.log(traversal);
+
+traversal = [];
+bst.preOrderForEach(function (x) {
+  traversal.push(x);
+  return x;
+});
+console.log(traversal);
+
+traversal = [];
+bst.postOrderForEach(function (x) {
+  traversal.push(x);
+  return x;
+});
+console.log(traversal);
+
+bst.insert(133);
+bst.insert(246);
+bst.insert(101);
+
 prettyPrint(bst.root);
-
-console.log(bst.includes(33));
-
-bst.insert(33);
+console.log("Tree is balanced:" + bst.isBalanced());
+bst.rebalance();
 prettyPrint(bst.root);
-
-console.log(bst.includes(33));
-
-bst.deleteItem(33);
-prettyPrint(bst.root);
-
-bst.postOrderForEach((x) => x + 1);
-prettyPrint(bst.root);
-
-console.log(bst.height(23));
-console.log(bst.height(68));
-console.log(bst.height(14));
+console.log("Tree is balanced:" + bst.isBalanced());
