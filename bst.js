@@ -50,6 +50,35 @@ class Tree {
     return root;
   }
 
+  #inorder(root, callback) {
+    if (root == null) return;
+    root.data = callback(root.data);
+    this.#inorder(root.left, callback);
+    this.#inorder(root.right, callback);
+  }
+
+  #preorder(root, callback) {
+    if (root == null) return;
+    root.data = callback(root.data);
+    this.#preorder(root.left, callback);
+    this.#preorder(root.right, callback);
+  }
+
+  #postorder(root, callback) {
+    if (root == null) return;
+    root.data = callback(root.data);
+    this.#postorder(root.left, callback);
+    this.#postorder(root.right, callback);
+  }
+
+  #findLongestPath(root) {
+    if (root == null) return 0;
+    let l = this.#findLongestPath(root.left);
+    let r = this.#findLongestPath(root.right);
+
+    return 1 + Math.max(l, r);
+  }
+
   includes(value) {
     let cur = this.root;
     while (cur !== null) {
@@ -83,9 +112,58 @@ class Tree {
     }
   }
 
-  delete(value) {
+  deleteItem(value) {
     let cur = this.root;
     return this.#deleteNode(cur, value);
+  }
+
+  levelOrderForEach(callback) {
+    if (!(typeof callback === "function")) {
+      throw new Error("No callback function passed.");
+    }
+    let queue = [];
+    queue.push(this.root);
+    while (queue.length !== 0) {
+      let node = queue.shift();
+      node.data = callback(node.data);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
+    }
+  }
+
+  inOrderForEach(callback) {
+    if (!(typeof callback === "function")) {
+      throw new Error("No callback function passed.");
+    }
+    this.#inorder(this.root, callback);
+  }
+
+  preOrderForEach(callback) {
+    if (!(typeof callback === "function")) {
+      throw new Error("No callback function passed.");
+    }
+    this.#preorder(this.root, callback);
+  }
+
+  postOrderForEach(callback) {
+    if (!(typeof callback === "function")) {
+      throw new Error("No callback function passed.");
+    }
+    this.#postorder(this.root, callback);
+  }
+
+  height(value) {
+    let cur = this.root;
+    while (cur !== null) {
+      if (cur.data > value) {
+        cur = cur.left;
+      } else if (cur.data < value) {
+        cur = cur.right;
+      } else {
+        console.log("FOUND");
+        return this.#findLongestPath(cur) - 1;
+      }
+    }
   }
 }
 // Driver Code
@@ -109,7 +187,8 @@ const randArr = (u_limit, size) => {
   return arr;
 };
 
-const arr = randArr(100, 10);
+// const arr = randArr(100, 10);
+const arr = [13, 22, 78, 5, 9, 10, 11, 45, 67, 88];
 const bst = new Tree(arr);
 prettyPrint(bst.root);
 
@@ -120,5 +199,12 @@ prettyPrint(bst.root);
 
 console.log(bst.includes(33));
 
-bst.delete(33);
+bst.deleteItem(33);
 prettyPrint(bst.root);
+
+bst.postOrderForEach((x) => x + 1);
+prettyPrint(bst.root);
+
+console.log(bst.height(23));
+console.log(bst.height(68));
+console.log(bst.height(14));
