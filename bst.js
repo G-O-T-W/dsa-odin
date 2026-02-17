@@ -58,6 +58,8 @@ class Tree {
       }
     }
   }
+
+  delete(value) {}
 }
 
 // Driver Code
@@ -86,7 +88,7 @@ const bst = new Tree(arr);
 prettyPrint(bst.root);
 
 console.log(bst.includes(23));
-console.log(bst.includes(989));
+console.log(bst.includes(9));
 
 bst.insert(33);
 prettyPrint(bst.root);
