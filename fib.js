@@ -18,7 +18,7 @@ function fibo(n) {
 }
 
 function fiboRes(n) {
-  console.log("Recursive");
+
   if (n <= 0) return [];
   if (n == 1) return [0];
   if (n == 2) return [0, 1];
@@ -28,5 +28,5 @@ function fiboRes(n) {
   return s;
 }
 
-console.log(fibo(0));
-console.log(fiboRes(0));
+console.log(fibo(10));
+console.log(fiboRes(10));
