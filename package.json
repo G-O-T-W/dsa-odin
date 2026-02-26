@@ -1,0 +1,21 @@
+{
+  "name": "dsa-odin",
+  "version": "1.0.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "git@github-personal:G-O-T-W/dsa-odin.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "module",
+  "main": "bst.js",
+  "scripts": {
+    "test": "jest",
+    "watch": "jest --watch *.js"
+  },
+  "devDependencies": {
+    "@babel/preset-env": "^7.29.0",
+    "jest": "^30.2.0"
+  }
+}
