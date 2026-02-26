@@ -34,32 +34,39 @@ export const findValidMoves = (pos) => {
 
 export const knightMoves = (pos1, pos2) => {
   // BFS
-  let vis = []; // record visited
+  const key = (pos) => `${pos[0]},${pos[1]}`;
+
+  let vis = new Set();
+  let path = new Map();
   let q = [];
+
   q.push(pos1);
-  let path = [];
+  vis.add(key(pos1));
+
   while (q.length !== 0) {
     const pos = q.shift();
-    if (JSON.stringify(pos) === JSON.stringify(pos2)) break;
-    let next_moves = findValidMoves(pos);
-    for (const move of next_moves) {
-      if (!vis[move]) {
-        vis[move] = 1;
+    if (key(pos) === key(pos2)) break;
+
+    for (const move of findValidMoves(pos)) {
+      if (!vis.has(key(move))) {
+        vis.add(key(move));
+        path.set(key(move), pos);
         q.push(move);
-        path[move] = pos; // Saving parent inorder to backtrack from pos2 to pos1
       }
     }
   }
-  // Find Shortest Path
+
+  // Backtrack from pos2 to pos1
   let shortest_path = [];
-  shortest_path.push(pos2);
   let pos = pos2;
-  // Backtracking from pos2 to pos1
-  while (pos !== pos1) {
-    pos = path[pos];
+  shortest_path.push(pos);
+  while (key(pos) !== key(pos1)) {
+    pos = path.get(key(pos));
     shortest_path.push(pos);
   }
+
   return shortest_path.reverse();
 };
+
 
 
