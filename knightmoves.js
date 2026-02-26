@@ -32,7 +32,6 @@ export const findValidMoves = (pos) => {
   return valid_moves;
 };
 
-
 export const knightMoves = (pos1, pos2) => {
   // BFS
   let vis = []; // record visited
@@ -63,6 +62,4 @@ export const knightMoves = (pos1, pos2) => {
   return shortest_path.reverse();
 };
 
-let shortest_path = knightMoves([0, 0], [7, 7]);
-console.log(`You made it in ${shortest_path.length - 1} moves!`);
-console.log(shortest_path);
+
