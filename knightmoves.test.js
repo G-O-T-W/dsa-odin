@@ -22,29 +22,6 @@ test("findValidMoves is working correctly", () => {
   ]);
 });
 
-test("hasGoal is working correctly", () => {
-  expect(
-    hasGoal(
-      [
-        [0, 0],
-        [1, 2],
-        [3, 3],
-      ],
-      [3, 3],
-    ),
-  ).toBe(true);
-  expect(
-    hasGoal(
-      [
-        [0, 0],
-        [1, 2],
-        [3, 3],
-      ],
-      [3, 2],
-    ),
-  ).toBe(false);
-});
-
 test("knightMoves is working correctly", () => {
   expect(knightMoves([0, 0], [3, 3])).toStrictEqual([[0, 0], [2, 1], [3, 3]]);
   expect(knightMoves([3, 3], [0, 0])).toStrictEqual([[3, 3], [1, 2], [0, 0]]);

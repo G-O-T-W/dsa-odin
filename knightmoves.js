@@ -32,48 +32,10 @@ export const findValidMoves = (pos) => {
   return valid_moves;
 };
 
-export const hasGoal = (arr, pos2) => {
-  let contains = arr.some((pos) => {
-    return JSON.stringify(pos) === JSON.stringify(pos2);
-  });
-  return !contains ? false : true;
-};
-
-export const createAdjList = (pos1, pos2) => {
-  let adj = [];
-  let q = [];
-  q.push(pos1);
-  while (q.length !== 0) {
-    const pos = q.shift();
-    if (adj[pos]) continue;
-    let next_moves = findValidMoves(pos);
-    q = [...q, ...next_moves];
-    adj[pos] = next_moves;
-    if (JSON.stringify(pos) === JSON.stringify(pos2)) break;
-    // if (hasGoal(next_moves, pos2)) break;
-  }
-  return adj;
-};
-
-
-
-export function shortestPath(pos1, pos2) {
-  let vis = [];
-  let q = [];
-  let path = [];
-  q.push(pos1);
-  while (q.length !== 0) {
-    const pos = q.shift();
-    if (vis[pos]) continue;
-    let next_moves = findValidMoves(pos);
-    q = [...q, ...next_moves];
-    if (JSON.stringify(pos) === JSON.stringify(pos2)) break;
-  }
-  return adj;
-}
 
 export const knightMoves = (pos1, pos2) => {
-  let vis = [];
+  // BFS
+  let vis = []; // record visited
   let q = [];
   q.push(pos1);
   let path = [];
@@ -85,13 +47,15 @@ export const knightMoves = (pos1, pos2) => {
       if (!vis[move]) {
         vis[move] = 1;
         q.push(move);
-        path[move] = pos; 
+        path[move] = pos; // Saving parent inorder to backtrack from pos2 to pos1
       }
     }
   }
+  // Find Shortest Path
   let shortest_path = [];
   shortest_path.push(pos2);
   let pos = pos2;
+  // Backtracking from pos2 to pos1
   while (pos !== pos1) {
     pos = path[pos];
     shortest_path.push(pos);
@@ -99,6 +63,6 @@ export const knightMoves = (pos1, pos2) => {
   return shortest_path.reverse();
 };
 
-let shortest_path = knightMoves([0, 0], [4, 5]);
+let shortest_path = knightMoves([0, 0], [7, 7]);
 console.log(`You made it in ${shortest_path.length - 1} moves!`);
 console.log(shortest_path);
